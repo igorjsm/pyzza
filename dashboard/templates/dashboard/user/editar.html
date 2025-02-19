@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% block title %}
+    Editar usuário
+{% endblock title %}
+{% block content %}
+    <h2>EDITAR USUÁRIO</h2>
+    <form method="post">
+        {% csrf_token %}
+        <div class="form-group">
+            <label>Nome de usuário:</label>
+            {{ form.username }}
+            {{ form.username.help_text }}
+            {{ form.username.errors }}
+        </div>
+        <br>
+        <div class="form-group">
+            <label>Email:</label>
+            {{ form.email }}
+            {{ form.email.errors }}
+        </div>
+        <br>
+        <div class="form-group">
+            <label>Senha:</label>
+            {{ form.password }}
+            {{ form.password.help_text }}
+            {{ form.password.errors }}
+        </div>
+        <br>
+        <div class="form-group">
+            <label>Confirmar senha:</label>
+            {{ form.confirm_password }}
+            {{ form.confirm_password.errors }}
+        </div>
+        <br>
+        <div class="form-group">
+            <label>Grupo:</label>
+            {{ form.groups }}
+            {{ form.groups.errors }}
+        </div>
+        <br>
+        <button type="submit" class="btn btn-primary">Salvar</button>
+    </form>
+{% endblock content %}

@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block title %}
+    Cadastrar Categoria
+{% endblock title %}
+{% block content %}
+    <h2>CADASTRAR CATEGORIA</h2>
+    <form method="post">
+        {% csrf_token %}
+        <div class="form-group">
+            <label>Nome da Categoria:</label>
+            {{ form.nome }}
+            {{ form.nome.errors }}
+        </div>
+        <br>
+        <button type="submit" class="btn btn-primary">Cadastrar</button>
+    </form>
+{% endblock content %}

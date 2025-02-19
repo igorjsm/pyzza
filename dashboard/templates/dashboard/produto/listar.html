@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+{% block title %}
+    Produtos
+{% endblock title %}
+{% block content %}
+    {% if messages %}
+        {% for message in messages %}<p class="alert alert-success">{{ message }}</p>{% endfor %}
+    {% endif %}
+    <h2>PRODUTOS</h2>
+    <div class="row mt-3">
+        <div class="col d-flex align-items-center">
+            <a href="{% url 'ProdutoListView' %}"
+               class="btn btn-outline-secondary me-2">
+                <i class="fa-solid fa-arrow-rotate-left"></i>
+            </a>
+            <form class="d-flex align-items-center"
+                  method="get"
+                  action="{% url 'ProdutoListView' %}">
+                <input class="form-control me-2"
+                       type="text"
+                       name="search"
+                       value="{{ request.GET.search }}"
+                       placeholder="Pesquisar">
+                <button class="btn btn-outline-info" type="submit">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </button>
+            </form>
+            <a href="{% url 'ProdutoCreateView' %}" class="btn btn-primary ms-2">
+                <i class="fa-solid fa-plus"></i>
+            </a>
+        </div>
+    </div>
+    <hr>
+    <table class="table table-striped table-hover">
+        <thead>
+            <tr>
+                <th>Nome</th>
+                <th>Categoria</th>
+                <th style="text-align: center;">Imagem</th>
+                <th style="text-align: center;">Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for produto in produtos %}
+                <tr class="align-middle">
+                    <td>{{ produto.nome }}</td>
+                    <td>{{ produto.descricao }}</td>
+                    <td style="text-align: center;">
+                        {% if produto.imagem %}
+                            <a href="{{ produto.imagem.url }}" target="_blank" class="btn btn-outline-info">
+                                <i class="fa-solid fa-eye"></i>
+                            </a>
+                        {% else %}
+                            <span class="text-muted">Sem imagem</span>
+                        {% endif %}
+                    </td>
+                    <td style="text-align: center;">
+                        <a class="btn btn-warning" href="{% url 'ProdutoUpdateView' produto.id %}">
+                            <i class="fa-regular fa-pen-to-square"></i>
+                        </a> |
+                        <form style="display:inline-block"
+                              action="{% url 'ProdutoDeleteView' produto.id %}"
+                              method="post"
+                              onsubmit="return confirmDelete()">
+                            {% csrf_token %}
+                            <button class="btn btn-warning" type="submit">
+                                <i class="fa-regular fa-trash-can"></i>
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+            {% empty %}
+                <tr class="align-middle">
+                    <td colspan="4">Nenhum produto encontrado.</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <script>
+        function confirmDelete() {
+            return confirm("Você tem certeza que deseja deletar este produto?");
+        }
+    </script>
+{% endblock content %}

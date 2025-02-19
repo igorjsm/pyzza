@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block title %}
+    Deletar Categoria
+{% endblock title %}
+{% block content %}
+    <h2>Você tem certeza que deseja excluir a categoria "{{ object }}"?</h2>
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-primary">Sim, excluir</button>
+        <a href="{% url 'CategoriaListView' %}" class="btn btn-secondary">Cancelar</a>
+    </form>
+{% endblock content %}

@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block title %} Meus Pedidos {% endblock %}
+
+{% block content %}
+    <h2 class="mb-4">Meus Pedidos</h2>
+
+    {% if pedidos %}
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Data</th>
+                        <th>Status</th>
+                        <th>Itens</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for pedido in pedidos %}
+                        <tr>
+                            <td>{{ pedido.id }}</td>
+                            <td>{{ pedido.data_criacao|date:"d/m/Y H:i" }}</td>
+                            <td>
+                                <span class="badge bg-{% if pedido.status == 'Entregue' %}success{% elif pedido.status == 'Pendente' %}warning{% else %}info{% endif %}">
+                                    {{ pedido.status }}
+                                </span>
+                            </td>
+                            <td>
+                                <ul>
+                                    {% for item in pedido.itens.all %}
+                                        <li>{{ item.quantidade }}x {{ item.produto.nome }}</li>
+                                    {% endfor %}
+                                </ul>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <p class="text-center">Você ainda não fez nenhum pedido.</p>
+    {% endif %}
+{% endblock %}

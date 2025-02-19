@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+{% block title %} Cardápio {% endblock title %}
+
+{% block content %}
+    <h2>CARDÁPIO</h2>
+    <ul class="nav nav-tabs" id="categoriaTabs" role="tablist">
+        {% for categoria in categorias %}
+            <li class="nav-item" role="presentation">
+                <button class="nav-link {% if forloop.first %}active{% endif %}" 
+                        id="tab-{{ categoria.id }}"
+                        data-bs-toggle="tab"
+                        data-bs-target="#categoria-{{ categoria.id }}"
+                        type="button" role="tab">
+                    {{ categoria.nome }}
+                </button>
+            </li>
+        {% endfor %}
+    </ul>
+
+    <div class="tab-content mt-3">
+        {% for categoria in categorias %}
+            <div class="tab-pane fade {% if forloop.first %}show active{% endif %}" 
+                 id="categoria-{{ categoria.id }}" role="tabpanel">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Nome</th>
+                            <th>Preço</th>
+                            <th style="text-align: center;">Imagem</th>
+                            <th style="text-align: center;">Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for produto in produtos %}
+                            {% if produto.categoria == categoria %}
+                                <tr class="align-middle">
+                                    <td>{{ produto.nome }}</td>
+                                    <td>R$ {{ produto.preco }}</td>
+                                    <td style="text-align: center;">
+                                        {% if produto.imagem %}
+                                            <img src="{{ produto.imagem.url }}" alt="{{ produto.nome }}" width="50">
+                                        {% else %}
+                                            <span class="text-muted">Sem imagem</span>
+                                        {% endif %}
+                                    </td>
+                                    <td style="text-align: center;">
+                                        <form action="{% url 'adicionar_ao_pedido' produto.id %}" method="post">
+                                            {% csrf_token %}
+                                            <button class="btn btn-primary">
+                                                <i class="fa-solid fa-cart-plus"></i> Adicionar
+                                            </button>
+                                        </form>
+                                    </td>                                    
+                                </tr>
+                            {% endif %}
+                        {% empty %}
+                            <tr>
+                                <td colspan="4" class="text-center">Nenhum produto nesta categoria.</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock content %}

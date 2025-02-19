@@ -1,0 +1,64 @@
+<nav class="col-md-3 col-lg-2 d-md-block bg-light border-end vh-100">
+    <div class="p-3">
+        <h5 class="text-center">
+            {% if user.groups.all.0.name == "Cliente" %}
+                CARDÁPIO
+            {% else %}
+                DASHBOARD
+            {% endif %}
+        </h5>
+        <ul class="nav flex-column">
+            {% if user.groups.all.0.name == "Cliente" %}
+                <li class="nav-item">
+                    <a class="nav-link active text-primary" href="{% url 'cardapio' %}">
+                        <i class="fa-solid fa-utensils me-2"></i> Cardápio
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-dark" href="{% url 'meu_pedido' %}">
+                        <i class="fa-solid fa-cart-shopping me-2"></i></i> Meu Pedido
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-dark" href="{% url 'ver_pedidos' %}">
+                        <i class="fa-solid fa-receipt me-2"></i> Meus Pedidos
+                    </a>
+                </li>
+            {% else %}
+                <li class="nav-item">
+                    <a class="nav-link active text-primary" href="{% url 'dashboard' %}">
+                        <i class="fas fa-home me-2"></i> Home
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-dark" href="{% url 'UserListView' %}">
+                        <i class="fa-regular fa-user me-2"></i> Usuários
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-dark" href="{% url 'CategoriaListView' %}">
+                        <i class="fa-solid fa-list me-2"></i> Categorias
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-dark" href="{% url 'ProdutoListView' %}">
+                        <i class="fa-solid fa-pizza-slice me-2"></i> Produtos
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-dark" href="{% url 'pedido_list' %}">
+                        <i class="fa-solid fa-clipboard-list me-2"></i> Pedidos
+                    </a>
+                </li>                
+            {% endif %}
+            <li class="nav-item">
+                <form action="{% url 'logout' %}" method="post" class="d-inline" style="padding: 16px">
+                    {% csrf_token %}
+                    <button type="submit" class="nav-link text-dark bg-transparent border-0 p-0">
+                        <i class="fa-solid fa-arrow-right-from-bracket me-2"></i> Encerrar Sessão
+                    </button>
+                </form>
+            </li>
+        </ul>
+    </div>
+</nav>

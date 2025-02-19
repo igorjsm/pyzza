@@ -1,0 +1,128 @@
+{% extends 'base.html' %}
+{% block title %}
+    Usuários
+{% endblock title %}
+{% block content %}
+    {% if messages %}
+        {% for message in messages %}<p class="alert alert-success">{{ message }}</p>{% endfor %}
+    {% endif %}
+    <h2>USUÁRIOS</h2>
+    <div class="row mt-3">
+        <div class="col d-flex align-items-center">
+            <a href="{% url 'UserListView' %}"
+               class="btn btn-outline-secondary me-2">
+                <i class="fa-solid fa-arrow-rotate-left"></i>
+            </a>
+            <form class="d-flex align-items-center"
+                  method="get"
+                  action="{% url 'UserListView' %}">
+                <input class="form-control me-2"
+                       type="text"
+                       name="search"
+                       value="{{ request.GET.search }}"
+                       placeholder="Pesquisar">
+                <button class="btn btn-outline-info" type="submit">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </button>
+            </form>
+            <a href="{% url 'UserCreateView' %}" class="btn btn-primary ms-2">
+                <i class="fa-solid fa-plus"></i>
+            </a>
+        </div>
+    </div>
+    <hr>
+    <table class="table table-striped table-hover">
+        <thead>
+            <tr>
+                <th>
+                    <a style="text-decoration: none;
+                              color: black"
+                       href="?sort=username&order={% if request.GET.order == 'asc' %}desc{% else %}asc{% endif %}">Nome de usuário
+                        {% if request.GET.sort == 'username' %}
+                            {% if request.GET.order == 'asc' %}
+                                <i class="fa-solid fa-arrow-down"></i>
+                            {% else %}
+                                <i class="fa-solid fa-arrow-up"></i>
+                            {% endif %}
+                        {% endif %}
+                    </a>
+                </th>
+                <th>
+                    <a style="text-decoration: none;
+                              color: black"
+                       href="?sort=email&order={% if request.GET.order == 'asc' %}desc{% else %}asc{% endif %}">Email
+                        {% if request.GET.sort == 'email' %}
+                            {% if request.GET.order == 'asc' %}
+                                <i class="fa-solid fa-arrow-down"></i>
+                            {% else %}
+                                <i class="fa-solid fa-arrow-up"></i>
+                            {% endif %}
+                        {% endif %}
+                    </a>
+                </th>
+                <th style="text-align: center;">Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in users %}
+                <tr class="align-middle">
+                    <td>{{ user.username }}</td>
+                    <td>{{ user.email }}</td>
+                    <td style="text-align: center;">
+                        <a class="btn btn-warning" href="{% url 'UserUpdateView' user.id %}"><i class="fa-regular fa-pen-to-square"></i></a> |
+                        <form style="display:inline-block"
+                              action="{% url 'UserDeleteView' user.id %}"
+                              method="post"
+                              onsubmit="return confirmDelete()">
+                            {% csrf_token %}
+                            <button class="btn btn-warning" type="submit">
+                                <i class="fa-regular fa-trash-can"></i>
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+            {% empty %}
+                <tr class="align-middle">
+                    <td colspan="3">Nenhum usuário encontrado.</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <div style="text-align: center;">
+        <div>
+            <span>
+                {% if page_obj.has_previous %}
+                    <a href="?page=1"><i class="fa-solid fa-angles-left"></i></a>
+                    <a href="?page={{ page_obj.previous_page_number }}"><i class="fa-solid fa-angle-left"></i></a>
+                {% endif %}
+                <span>Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}</span>
+                {% if page_obj.has_next %}
+                    <a href="?page={{ page_obj.next_page_number }}"><i class="fa-solid fa-angle-right"></i></a>
+                    <a href="?page={{ page_obj.paginator.num_pages }}"><i class="fa-solid fa-angles-right"></i></a>
+                {% endif %}
+            </span>
+        </div>
+        <div class="d-flex justify-content-center align-items-center mt-3">
+            <form class="d-flex align-items-center" method="get">
+                <label for="page" class="form-label me-2">Ir para a página:</label>
+                <div class="input-group" style="width: 100px;">
+                    <input type="number"
+                           id="page"
+                           name="page"
+                           class="form-control"
+                           min="1"
+                           max="{{ page_obj.paginator.num_pages }}"
+                           style="text-align: center">
+                </div>
+                <button type="submit" class="btn btn-outline-primary ms-2">
+                    <i class="fa-solid fa-location-dot"></i>
+                </button>
+            </form>
+        </div>
+    </div>
+    <script>
+        function confirmDelete() {
+            return confirm("Você tem certeza que deseja deletar esse usuário?");
+        }
+    </script>
+{% endblock content %}

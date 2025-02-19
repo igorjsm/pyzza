@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% block title %}
+    Cadastrar Produto
+{% endblock title %}
+{% block content %}
+    <h2>CADASTRAR PRODUTO</h2>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="form-group">
+            <label>Nome do Produto:</label>
+            {{ form.nome }}
+            {{ form.nome.errors }}
+        </div>
+        <br>
+        <div class="form-group">
+            <label>Descrição:</label>
+            {{ form.descricao }}
+            {{ form.descricao.errors }}
+        </div>
+        <br>
+        <div class="form-group">
+            <label>Categoria:</label>
+            {{ form.categoria }}
+            {{ form.categoria.errors }}
+        </div>
+        <br>
+        <div class="form-group">
+            <label>Preço:</label>
+            {{ form.preco }}
+            {{ form.preco.errors }}
+        </div>
+        <br>
+        <div class="form-group">
+            <label>Imagem do Produto:</label>
+            {{ form.imagem }}
+            {{ form.imagem.errors }}
+        </div>
+        <br>
+        <button type="submit" class="btn btn-primary">Cadastrar</button>
+    </form>
+{% endblock content %}

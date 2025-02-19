@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block title %}
+    Deletar Produto
+{% endblock title %}
+{% block content %}
+    <h2>Você tem certeza que deseja excluir o produto "{{ object }}"?</h2>
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-primary">Sim, excluir</button>
+        <a href="{% url 'ProdutoListView' %}" class="btn btn-secondary">Cancelar</a>
+    </form>
+{% endblock content %}
